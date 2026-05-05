@@ -47,7 +47,7 @@
         }
 
         .app-container {
-            width: 90%;
+            width: 95%;
             max-width: 600px;
             text-align: center;
             z-index: 10;
@@ -114,24 +114,30 @@
 
         button:hover { background: white; transform: translateY(-2px); }
 
-        /* Her inputu kendi bağımsız kutusuna aldık */
-        .interaction-wrapper { margin-bottom: 15px; }
+        /* YAN YANA GİRİŞ ALANLARI */
+        .interaction-area {
+            display: flex;
+            flex-direction: row; /* Yan yana */
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
 
         input {
             background: transparent;
             border: none;
             border-bottom: 1px solid rgba(0,0,0,0.08);
-            padding: 10px;
-            width: 180px;
+            padding: 10px 5px;
+            width: 140px; /* Biraz daha daraltıldı */
             text-align: center;
             font-family: var(--serif);
             font-style: italic;
             outline: none;
-            transition: 0.5s;
-            font-size: 16px; 
+            transition: 0.4s;
+            font-size: 15px; 
         }
 
-        input:focus { width: 260px; border-bottom-color: var(--accent); }
+        input:focus { width: 160px; border-bottom-color: var(--accent); }
 
         .flying-word {
             position: fixed;
@@ -172,14 +178,10 @@
 
         <nav class="category-nav" id="category-buttons"></nav>
 
-        <!-- INPUTLAR ARTIK AYRI WRAPPERLAR İÇİNDE (KLAVYE ÇÖZÜMÜ) -->
+        <!-- YAN YANA GİRİŞ ALANLARI -->
         <div class="interaction-area">
-            <div class="interaction-wrapper">
-                <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
-            </div>
-            <div class="interaction-wrapper">
-                <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?" autocomplete="off">
-            </div>
+            <input type="text" id="canvas-input" placeholder="Zihni boşalt..." autocomplete="off">
+            <input type="text" id="reward-input" placeholder="Ödülün ne?" autocomplete="off">
         </div>
     </div>
 
@@ -224,7 +226,7 @@
             }
         };
 
-        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!", "Bunu hak ettin!", "Harika gidiyorsun!"];
+        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!", "Bunu hak ettin!"];
 
         window.onload = () => {
             const allCats = Object.keys(vibeData);
@@ -241,40 +243,29 @@
                 nav.appendChild(btn);
             });
 
+            // GİRİŞ DİNLEYİCİLERİ
             const canvasInput = document.getElementById('canvas-input');
             const rewardInput = document.getElementById('reward-input');
 
-            // MOBİL KLAVYE TAM UYUMLULUK
-            canvasInput.addEventListener('keydown', function(e) {
+            const handleEvent = (e, callback) => {
                 if (e.key === 'Enter' || e.keyCode === 13) {
                     e.preventDefault();
-                    let val = this.value.trim();
+                    let val = e.target.value.trim();
                     if (val !== "") {
-                        createFloatingWord(val);
-                        this.value = "";
-                        this.blur(); // Odaktan çık ki klavye kapansın/güncellensin
+                        callback(val);
+                        e.target.value = "";
+                        e.target.blur();
                     }
                 }
-            });
+            };
 
-            rewardInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.keyCode === 13) {
-                    e.preventDefault();
-                    let val = this.value.trim();
-                    if (val !== "") {
-                        confetti({ 
-                            particleCount: 150, 
-                            spread: 80, 
-                            origin: { y: 0.75 }, 
-                            colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] 
-                        });
-                        const msg = rewards[Math.floor(Math.random() * rewards.length)];
-                        this.value = `${msg} (${val})`;
-                        setTimeout(() => { this.value = ""; }, 3000);
-                        this.blur();
-                    }
-                }
-            });
+            canvasInput.addEventListener('keydown', (e) => handleEvent(e, createFloatingWord));
+            rewardInput.addEventListener('keydown', (e) => handleEvent(e, (val) => {
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
+                const msg = rewards[Math.floor(Math.random() * rewards.length)];
+                rewardInput.value = `${msg} (${val})`;
+                setTimeout(() => { rewardInput.value = ""; }, 3000);
+            }));
         };
 
         function createFloatingWord(val) {
@@ -283,7 +274,6 @@
             el.innerText = val;
             el.style.left = Math.random() * 60 + 20 + "%";
             document.body.appendChild(el);
-            
             setTimeout(() => {
                 el.style.transform = `translate(-50%, -450px) rotate(${Math.random() * 20 - 10}deg)`;
                 el.style.opacity = "0";
@@ -293,17 +283,14 @@
 
         function updateTheme(cat) {
             const data = vibeData[cat];
-            const quote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
-            
-            document.getElementById('dyn-en').innerText = `"${quote.en}"`;
-            document.getElementById('dyn-tr').innerText = quote.tr;
+            document.getElementById('dyn-en').innerText = `"${data.quotes[Math.floor(Math.random() * data.quotes.length)].en}"`;
+            document.getElementById('dyn-tr').innerText = data.quotes[0].tr;
             document.getElementById('ritual-box').innerText = `ODAK: ${data.words[Math.floor(Math.random() * data.words.length)]}`;
             document.body.style.backgroundColor = data.colors[Math.floor(Math.random() * data.colors.length)];
 
             const companion = document.getElementById('companion-doodle');
             companion.style.opacity = "0";
             companion.style.transform = "scale(0.8)";
-            
             setTimeout(() => {
                 companion.innerHTML = `<i data-lucide="${data.doodles[Math.floor(Math.random() * data.doodles.length)]}"></i>`;
                 lucide.createIcons();
