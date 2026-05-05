@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VibeMotto | Digital Sanctuary</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- İkon kütüphanesi -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --text: #333230;
@@ -14,7 +16,7 @@
         }
 
         body {
-            background: #fffcf5; /* Başlangıç: Krem */
+            background: #fffcf5;
             color: var(--text);
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -22,7 +24,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            transition: background 2.5s ease-in-out; /* Huzurlu renk geçişi */
+            transition: background 2.5s ease-in-out;
             overflow: hidden;
         }
 
@@ -66,6 +68,15 @@
         }
 
         .fixed-en { font-family: var(--serif); font-style: italic; font-size: 1.2rem; margin: 0; opacity: 0.7; }
+
+        /* Doodle / Eşlikçi Stili */
+        .doodle-icon {
+            display: block;
+            margin: 0 auto 15px;
+            color: var(--accent);
+            opacity: 0.6;
+            transition: all 0.8s ease;
+        }
 
         .dynamic-motto-en { font-family: var(--serif); font-style: italic; font-size: 1.8rem; margin: 0 0 10px 0; line-height: 1.3; }
         .dynamic-motto-tr { font-size: 1rem; color: var(--soft); margin-bottom: 30px; font-weight: 300; }
@@ -148,6 +159,8 @@
         <!-- DİNAMİK ALAN -->
         <div class="dynamic-wrap">
             <p class="label">KATEGORİ REHBERİ</p>
+            <!-- Minik Eşlikçi (Doodle) Burada Belirecek -->
+            <div id="companion-doodle" class="doodle-icon"></div>
             <h1 id="dyn-en" class="dynamic-motto-en">Frekansını belirle...</h1>
             <p id="dyn-tr" class="dynamic-motto-tr">Zihnini doğru ritme çekmek için bir kategori seç.</p>
         </div>
@@ -171,7 +184,8 @@
                     {en: "Consistency is stronger than intensity.", tr: "Süreklilik, yoğunluktan daha güçlüdür."}
                 ],
                 words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM", "AKKIŞ", "NETLİK"],
-                colors: ["#fff5f6", "#fce4e6", "#fbc7d4"] // PEMBE
+                colors: ["#fff5f6", "#fce4e6", "#fbc7d4"],
+                doodles: ["target", "compass", "anchor", "hourglass", "mountain"]
             },
             "Plan ve Eylem": {
                 quotes: [
@@ -179,7 +193,8 @@
                     {en: "Prepare, act, adjust.", tr: "Hazırla, uygula, gerektiğinde ayarla."}
                 ],
                 words: ["HAREKET", "İCRAAT", "STRATEJİ", "CESARET", "ZAMAN", "SİSTEM", "GÜÇ"],
-                colors: ["#f0f7ff", "#e1f0ff", "#d1e9ff"] // MAVİ
+                colors: ["#f0f7ff", "#e1f0ff", "#d1e9ff"],
+                doodles: ["check-circle", "send", "calendar", "zap", "map"]
             },
             "Anı Yaşamak": {
                 quotes: [
@@ -187,7 +202,8 @@
                     {en: "Be present, not perfect.", tr: "Mükemmel olmayı değil, şu anı yaşa."}
                 ],
                 words: ["FARKINDALIK", "NEFES", "VARLIK", "AKKIŞ", "SÜKUNET", "GÖZLEM", "DURGUNLUK"],
-                colors: ["#fffdf0", "#fff9d4", "#f7d794"] // SARILAR
+                colors: ["#fffdf0", "#fff9d4", "#f7d794"],
+                doodles: ["leaf", "eye", "sun", "wind", "flower"]
             },
             "Enerji ve Akış": {
                 quotes: [
@@ -195,7 +211,8 @@
                     {en: "Flow with energy, not with urgency.", tr: "Aceleyle değil, enerjiyle ak."}
                 ],
                 words: ["CANLILIK", "DİRENÇ", "IŞILTI", "DENGE", "DÖNÜŞÜM", "YÜKSELİŞ", "TAZELEME"],
-                colors: ["#f2faf5", "#e6f5ec", "#d1ebd8"] // SOFT YEŞİL (ADADAÇAYI/MİNT)
+                colors: ["#f2faf5", "#e6f5ec", "#d1ebd8"],
+                doodles: ["waves", "sparkles", "infinity", "droplet", "cloud-lightning"]
             }
         };
 
@@ -245,13 +262,30 @@
 
         function updateTheme(cat) {
             const data = vibeData[cat];
-            document.getElementById('dyn-en').innerText = `"${data.quotes[Math.floor(Math.random() * data.quotes.length)].en}"`;
-            document.getElementById('dyn-tr').innerText = data.quotes[0].tr; // İlk Türkçe çeviriye sabitledik veya rastgeleleştirilebilir
             
+            // Motto güncelleme
+            document.getElementById('dyn-en').innerText = `"${data.quotes[Math.floor(Math.random() * data.quotes.length)].en}"`;
+            document.getElementById('dyn-tr').innerText = data.quotes[0].tr;
+            
+            // Odak kelimesi
             document.getElementById('ritual-box').innerText = `ODAK: ${data.words[Math.floor(Math.random() * data.words.length)]}`;
             
-            // Renk paleti seçimi
+            // Renk paleti
             document.body.style.backgroundColor = data.colors[Math.floor(Math.random() * data.colors.length)];
+
+            // DOODLE GÜNCELLEME
+            const companion = document.getElementById('companion-doodle');
+            const randomDoodle = data.doodles[Math.floor(Math.random() * data.doodles.length)];
+            
+            companion.style.opacity = "0";
+            companion.style.transform = "scale(0.8)";
+            
+            setTimeout(() => {
+                companion.innerHTML = `<i data-lucide="${randomDoodle}"></i>`;
+                lucide.createIcons(); // İkonu oluştur
+                companion.style.opacity = "0.6";
+                companion.style.transform = "scale(1)";
+            }, 400);
         }
     </script>
 </body>
