@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMotto | Digital Masterpiece</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Günün Mottosu ve Ritüeli -->
+        <header class="header-section">
+            <p id="daily-motto-text" class="fade-in">“Small consistent steps beat big occasional efforts.”</p>
+            <div id="ritual-box" class="ritual-box">
+                <p id="ritual-text"></p>
+            </div>
+            <span class="motto-divider"></span>
+        </header>
+
+        <!-- Dinamik İçerik Alanı -->
+        <main id="display-area" class="display-area">
+            <div id="content-card" class="content-card hidden">
+                <h2 id="motto-en"></h2>
+                <p id="motto-tr"></p>
+            </div>
+        </main>
+
+        <!-- Kategori Butonları -->
+        <nav class="category-grid" id="category-buttons"></nav>
+
+        <!-- Günün Kanvası -->
+        <section class="canvas-section">
+            <input type="text" id="canvas-input" placeholder="Zihnini buraya boşalt ve serbest bırak...">
+        </section>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
