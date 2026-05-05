@@ -2,10 +2,9 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VibeMotto | Digital Sanctuary</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <!-- İkon kütüphanesi -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
@@ -24,8 +23,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             transition: background 2.5s ease-in-out;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
         .focus-orb {
@@ -50,12 +51,13 @@
             max-width: 600px;
             text-align: center;
             z-index: 10;
+            padding: 20px 0;
         }
 
         .fixed-header {
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            padding-bottom: 25px;
-            margin-bottom: 35px;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .label {
@@ -63,30 +65,30 @@
             letter-spacing: 5px;
             color: var(--accent);
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-weight: 500;
         }
 
-        .fixed-en { font-family: var(--serif); font-style: italic; font-size: 1.2rem; margin: 0; opacity: 0.7; }
+        .fixed-en { font-family: var(--serif); font-style: italic; font-size: 1.1rem; margin: 0; opacity: 0.7; }
 
-        /* Doodle / Eşlikçi Stili */
         .doodle-icon {
             display: block;
             margin: 0 auto 15px;
             color: var(--accent);
-            opacity: 0.6;
+            opacity: 0;
             transition: all 0.8s ease;
+            height: 32px;
         }
 
-        .dynamic-motto-en { font-family: var(--serif); font-style: italic; font-size: 1.8rem; margin: 0 0 10px 0; line-height: 1.3; }
-        .dynamic-motto-tr { font-size: 1rem; color: var(--soft); margin-bottom: 30px; font-weight: 300; }
+        .dynamic-motto-en { font-family: var(--serif); font-style: italic; font-size: 1.6rem; margin: 0 0 8px 0; line-height: 1.3; }
+        .dynamic-motto-tr { font-size: 0.9rem; color: var(--soft); margin-bottom: 25px; font-weight: 300; }
 
         .ritual-box {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 4px;
             color: #2c2c2c;
             font-weight: 600;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             text-transform: uppercase;
             height: 20px;
         }
@@ -95,52 +97,54 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 50px;
+            gap: 10px;
+            margin-bottom: 40px;
         }
 
         button {
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(0,0,0,0.05);
-            padding: 9px 22px;
+            padding: 8px 18px;
             border-radius: 40px;
             cursor: pointer;
             color: var(--soft);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.4s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        button:hover { 
-            background: white; 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
+        button:hover { background: white; transform: translateY(-2px); }
 
-        .input-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .input-group { display: flex; flex-direction: column; gap: 12px; align-items: center; }
 
         input {
             background: transparent;
             border: none;
             border-bottom: 1px solid rgba(0,0,0,0.08);
             padding: 10px;
-            width: 200px;
+            width: 180px;
             text-align: center;
             font-family: var(--serif);
             font-style: italic;
             outline: none;
             transition: 0.5s;
+            font-size: 16px; /* Mobil tarayıcılarda zoom yapmaması için minimum 16px */
         }
 
-        input:focus { width: 300px; border-bottom-color: var(--accent); }
+        input:focus { width: 260px; border-bottom-color: var(--accent); }
 
         .flying-word {
             position: fixed;
-            bottom: 20%;
+            bottom: 35%;
+            left: 50%;
+            transform: translateX(-50%);
             font-family: var(--serif);
             font-style: italic;
             color: var(--soft);
-            transition: 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+            z-index: 9999;
             pointer-events: none;
+            transition: all 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -153,16 +157,15 @@
         <div class="fixed-header">
             <p class="label">GÜNÜN SABİT MOTTOSU</p>
             <h2 id="fixed-en" class="fixed-en"></h2>
-            <p id="fixed-tr" style="font-size: 0.85rem; color: var(--accent); margin-top: 5px;"></p>
+            <p id="fixed-tr" style="font-size: 0.8rem; color: var(--accent); margin-top: 5px;"></p>
         </div>
 
         <!-- DİNAMİK ALAN -->
         <div class="dynamic-wrap">
             <p class="label">KATEGORİ REHBERİ</p>
-            <!-- Minik Eşlikçi (Doodle) Burada Belirecek -->
             <div id="companion-doodle" class="doodle-icon"></div>
             <h1 id="dyn-en" class="dynamic-motto-en">Frekansını belirle...</h1>
-            <p id="dyn-tr" class="dynamic-motto-tr">Zihnini doğru ritme çekmek için bir kategori seç.</p>
+            <p id="dyn-tr" class="dynamic-motto-tr">Bir kategori seçerek ritüeli başlat.</p>
         </div>
 
         <div id="ritual-box" class="ritual-box">RİTÜELİNİ BAŞLAT</div>
@@ -183,40 +186,40 @@
                     {en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür."},
                     {en: "Consistency is stronger than intensity.", tr: "Süreklilik, yoğunluktan daha güçlüdür."}
                 ],
-                words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM", "AKKIŞ", "NETLİK"],
+                words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM", "NETLİK"],
                 colors: ["#fff5f6", "#fce4e6", "#fbc7d4"],
-                doodles: ["target", "compass", "anchor", "hourglass", "mountain"]
+                doodles: ["target", "compass", "anchor", "hourglass"]
             },
             "Plan ve Eylem": {
                 quotes: [
                     {en: "Plans over moods, action over hesitation.", tr: "Duyguların önüne plan koy, tereddüt yerine harekete geç."},
                     {en: "Prepare, act, adjust.", tr: "Hazırla, uygula, gerektiğinde ayarla."}
                 ],
-                words: ["HAREKET", "İCRAAT", "STRATEJİ", "CESARET", "ZAMAN", "SİSTEM", "GÜÇ"],
+                words: ["HAREKET", "İCRAAT", "STRATEJİ", "CESARET", "SİSTEM", "GÜÇ"],
                 colors: ["#f0f7ff", "#e1f0ff", "#d1e9ff"],
-                doodles: ["check-circle", "send", "calendar", "zap", "map"]
+                doodles: ["check-circle", "send", "zap", "map"]
             },
             "Anı Yaşamak": {
                 quotes: [
                     {en: "This moment is enough, focus on it.", tr: "Bu an yeterli, ona odaklan."},
                     {en: "Be present, not perfect.", tr: "Mükemmel olmayı değil, şu anı yaşa."}
                 ],
-                words: ["FARKINDALIK", "NEFES", "VARLIK", "AKKIŞ", "SÜKUNET", "GÖZLEM", "DURGUNLUK"],
+                words: ["FARKINDALIK", "NEFES", "VARLIK", "AKKIŞ", "SÜKUNET", "GÖZLEM"],
                 colors: ["#fffdf0", "#fff9d4", "#f7d794"],
-                doodles: ["leaf", "eye", "sun", "wind", "flower"]
+                doodles: ["leaf", "eye", "sun", "flower"]
             },
             "Enerji ve Akış": {
                 quotes: [
                     {en: "Energy first, then task.", tr: "Önce enerji, sonra görev."},
                     {en: "Flow with energy, not with urgency.", tr: "Aceleyle değil, enerjiyle ak."}
                 ],
-                words: ["CANLILIK", "DİRENÇ", "IŞILTI", "DENGE", "DÖNÜŞÜM", "YÜKSELİŞ", "TAZELEME"],
+                words: ["CANLILIK", "IŞILTI", "DENGE", "DÖNÜŞÜM", "YÜKSELİŞ", "TAZELEME"],
                 colors: ["#f2faf5", "#e6f5ec", "#d1ebd8"],
-                doodles: ["waves", "sparkles", "infinity", "droplet", "cloud-lightning"]
+                doodles: ["waves", "sparkles", "infinity", "droplet"]
             }
         };
 
-        const rewards = ["Harikasın!", "Süper!", "Wow!", "Mükemmel!", "Bunu hak ettin!", "Işılda! ✨", "Gurur duy!", "Harika gidiyorsun!"];
+        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!"];
 
         window.onload = () => {
             const allCats = Object.keys(vibeData);
@@ -233,56 +236,68 @@
                 nav.appendChild(btn);
             });
 
-            document.getElementById('canvas-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && this.value) {
-                    const el = document.createElement('div');
-                    el.className = 'flying-word';
-                    el.innerText = this.value;
-                    el.style.left = Math.random() * 60 + 20 + "%";
-                    document.body.appendChild(el);
-                    setTimeout(() => {
-                        el.style.transform = `translateY(-300px) rotate(${Math.random() * 10 - 5}deg)`;
-                        el.style.opacity = "0";
-                        setTimeout(() => el.remove(), 4000);
-                    }, 100);
-                    this.value = "";
-                }
-            });
-
-            document.getElementById('reward-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && this.value) {
-                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
-                    const randomMsg = rewards[Math.floor(Math.random() * rewards.length)];
-                    let savedVal = this.value;
-                    this.value = `${randomMsg} (${savedVal})`;
-                    setTimeout(() => this.value = "", 3500);
-                }
-            });
+            // Mobil Uyumlu Giriş Fonksiyonları
+            setupInputEffects();
         };
+
+        function setupInputEffects() {
+            const canvasInput = document.getElementById('canvas-input');
+            const rewardInput = document.getElementById('reward-input');
+
+            const handleInput = (e, callback) => {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                    if (e.target.value.trim() !== "") {
+                        callback(e.target.value);
+                        e.target.value = "";
+                        e.target.blur(); // Klavyeyi kapat (Mobilde uçuşu görmek için)
+                    }
+                }
+            };
+
+            canvasInput.addEventListener('keydown', (e) => handleInput(e, createFloatingWord));
+            rewardInput.addEventListener('keydown', (e) => handleInput(e, triggerConfetti));
+        }
+
+        function createFloatingWord(val) {
+            const el = document.createElement('div');
+            el.className = 'flying-word';
+            el.innerText = val;
+            el.style.left = Math.random() * 60 + 20 + "%";
+            document.body.appendChild(el);
+            
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.style.transform = `translate(-50%, -450px) rotate(${Math.random() * 20 - 10}deg)`;
+                    el.style.opacity = "0";
+                    setTimeout(() => el.remove(), 4000);
+                }, 50);
+            });
+        }
+
+        function triggerConfetti(val) {
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
+            const msg = rewards[Math.floor(Math.random() * rewards.length)];
+            document.getElementById('reward-input').value = `${msg} (${val})`;
+            setTimeout(() => { document.getElementById('reward-input').value = ""; }, 3000);
+        }
 
         function updateTheme(cat) {
             const data = vibeData[cat];
+            const quote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
             
-            // Motto güncelleme
-            document.getElementById('dyn-en').innerText = `"${data.quotes[Math.floor(Math.random() * data.quotes.length)].en}"`;
-            document.getElementById('dyn-tr').innerText = data.quotes[0].tr;
-            
-            // Odak kelimesi
+            document.getElementById('dyn-en').innerText = `"${quote.en}"`;
+            document.getElementById('dyn-tr').innerText = quote.tr;
             document.getElementById('ritual-box').innerText = `ODAK: ${data.words[Math.floor(Math.random() * data.words.length)]}`;
-            
-            // Renk paleti
             document.body.style.backgroundColor = data.colors[Math.floor(Math.random() * data.colors.length)];
 
-            // DOODLE GÜNCELLEME
             const companion = document.getElementById('companion-doodle');
-            const randomDoodle = data.doodles[Math.floor(Math.random() * data.doodles.length)];
-            
             companion.style.opacity = "0";
             companion.style.transform = "scale(0.8)";
             
             setTimeout(() => {
-                companion.innerHTML = `<i data-lucide="${randomDoodle}"></i>`;
-                lucide.createIcons(); // İkonu oluştur
+                companion.innerHTML = `<i data-lucide="${data.doodles[Math.floor(Math.random() * data.doodles.length)]}"></i>`;
+                lucide.createIcons();
                 companion.style.opacity = "0.6";
                 companion.style.transform = "scale(1)";
             }, 400);
