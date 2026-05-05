@@ -1,112 +1,136 @@
 :root {
-    --bg-color: #fcfaf7;
-    --text-main: #333230;
-    --text-sub: #7a7875;
-    --accent-color: #e8e2da;
-    --serif-font: 'Georgia', serif;
+    --bg-light: #fdfbf9;
+    --text-dark: #2c2c2c;
+    --text-soft: #6e6e6e;
+    --accent: #dcd3c9;
+    --serif: 'Lora', serif;
+    --sans: 'Inter', sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: var(--serif-font);
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: var(--sans);
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-    overflow-x: hidden;
-    transition: background 1.2s ease;
+    transition: background 1.5s ease-in-out;
+    overflow: hidden;
 }
 
 .app-container {
     width: 90%;
-    max-width: 600px;
-    text-align: center;
-    padding: 40px 0;
+    max-width: 550px;
+    z-index: 10;
 }
 
-.ritual-box {
-    font-size: 0.85rem;
-    color: #9a9895;
-    margin: 10px 0 20px;
+/* Motto Alanı */
+.motto-display {
+    min-height: 120px;
+    margin-bottom: 10px;
+}
+
+.motto-en {
+    font-family: var(--serif);
+    font-size: 1.6rem;
     font-style: italic;
-    letter-spacing: 0.5px;
-}
-
-.motto-divider {
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--accent-color);
-    margin: 0 auto 40px;
-}
-
-.content-card h2 {
-    font-size: 1.8rem;
-    font-weight: 400;
-    margin-bottom: 15px;
     line-height: 1.4;
+    margin-bottom: 10px;
 }
 
-.category-grid {
+.motto-tr {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-weight: 300;
+}
+
+.ritual-text {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 40px;
+}
+
+/* Şık Butonlar */
+.category-nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-top: 40px;
+    gap: 12px;
+    margin-bottom: 60px;
 }
 
 button {
-    background: transparent;
-    border: 1px solid var(--accent-color);
-    padding: 8px 15px;
-    cursor: pointer;
-    font-family: inherit;
+    background: white;
+    border: 1px solid #f0f0f0;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-family: var(--sans);
     font-size: 0.85rem;
-    color: var(--text-sub);
-    transition: all 0.3s ease;
-    border-radius: 20px;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
 button:hover {
-    background: var(--accent-color);
-    color: var(--text-main);
+    border-color: var(--accent);
+    color: var(--text-dark);
+    transform: translateY(-2px);
 }
 
-.canvas-section { margin-top: 60px; }
+/* Etkileşim Alanı */
+.interaction-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
 
-#canvas-input {
+input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--accent-color);
-    font-family: var(--serif-font);
-    font-style: italic;
-    text-align: center;
+    border-bottom: 1px solid #eee;
     padding: 10px;
-    width: 220px;
+    width: 200px;
+    text-align: center;
+    font-family: var(--serif);
+    font-style: italic;
+    transition: all 0.5s ease;
     outline: none;
-    color: var(--text-sub);
-    transition: width 0.5s ease;
 }
 
-#canvas-input:focus { width: 320px; }
+input:focus {
+    width: 280px;
+    border-bottom-color: var(--accent);
+}
 
-.floating-orb {
+/* Odak Halkası (The Orb) */
+.focus-orb {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 1px solid rgba(220, 211, 201, 0.3);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    transition: all 2s ease;
+}
+
+/* Uçan Kelime */
+.floating-word {
     position: fixed;
     bottom: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    font-family: var(--serif);
     font-style: italic;
+    color: var(--text-soft);
     pointer-events: none;
-    z-index: 1000;
-    transition: all 2.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+    z-index: 5;
+    transition: all 3s ease-out;
 }
-
-.fade-in { animation: fadeIn 1.5s ease-in; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.hidden { display: none; }
