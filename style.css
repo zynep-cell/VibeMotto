@@ -1,0 +1,112 @@
+:root {
+    --bg-color: #fcfaf7;
+    --text-main: #333230;
+    --text-sub: #7a7875;
+    --accent-color: #e8e2da;
+    --serif-font: 'Georgia', serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--serif-font);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    transition: background 1.2s ease;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.ritual-box {
+    font-size: 0.85rem;
+    color: #9a9895;
+    margin: 10px 0 20px;
+    font-style: italic;
+    letter-spacing: 0.5px;
+}
+
+.motto-divider {
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent-color);
+    margin: 0 auto 40px;
+}
+
+.content-card h2 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+button {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+
+button:hover {
+    background: var(--accent-color);
+    color: var(--text-main);
+}
+
+.canvas-section { margin-top: 60px; }
+
+#canvas-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--accent-color);
+    font-family: var(--serif-font);
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+    width: 220px;
+    outline: none;
+    color: var(--text-sub);
+    transition: width 0.5s ease;
+}
+
+#canvas-input:focus { width: 320px; }
+
+.floating-orb {
+    position: fixed;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    font-style: italic;
+    pointer-events: none;
+    z-index: 1000;
+    transition: all 2.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+}
+
+.fade-in { animation: fadeIn 1.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.hidden { display: none; }
