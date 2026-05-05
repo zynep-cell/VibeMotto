@@ -3,53 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeMotto | Digital Sanctuary</title>
-    <!-- Stil Dosyası Bağlantısı -->
+    <title>VibeMotto</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts: Estetik Serif ve Modern Sans Fontlar -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- Arka Plandaki Nefes Alan Odak Halkası (The Orb) -->
     <div id="focus-orb" class="focus-orb"></div>
 
     <div class="app-container">
-        <!-- Üst Bölüm: Sabit Günün Mottosu -->
-        <header class="daily-motto-header">
-            <p class="motto-label">GÜNÜN MOTTOSU</p>
-            <div id="motto-display" class="motto-display">
-                <h1 id="motto-en" class="motto-en">Yükleniyor...</h1>
-                <p id="motto-tr" class="motto-tr"></p>
-            </div>
-        </header>
-
-        <!-- Orta Bölüm: Dinamik Odak Kelimesi -->
-        <div class="ritual-container">
-            <div id="ritual-box" class="ritual-text">KATEGORİ SEÇİN</div>
+        <!-- Motto Alanı -->
+        <div id="motto-wrap" class="motto-wrap">
+            <h1 id="motto-en"></h1>
+            <p id="motto-tr"></p>
         </div>
 
-        <!-- Navigasyon: Kategori Butonları -->
-        <nav class="category-nav" id="category-buttons">
-            <!-- Butonlar app.js tarafından buraya dinamik olarak eklenecek -->
-        </nav>
+        <!-- Odak Kelimesi -->
+        <div id="ritual-box" class="ritual-box"></div>
 
-        <!-- Alt Bölüm: Etkileşimli Giriş Alanları (Kanvas & Ödül) -->
-        <section class="interaction-area">
-            <div class="input-group">
-                <input type="text" id="canvas-input" autocomplete="off" placeholder="Zihnini serbest bırak...">
-            </div>
-            <div class="input-group">
-                <input type="text" id="reward-input" autocomplete="off" placeholder="Bugünkü ödülün ne?">
-            </div>
-        </section>
+        <!-- Kategoriler -->
+        <nav class="category-nav" id="category-buttons"></nav>
+
+        <!-- Etkileşim -->
+        <div class="interaction-group">
+            <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
+            <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?" autocomplete="off">
+        </div>
     </div>
 
-    <!-- Harici Kütüphaneler -->
-    <!-- Konfeti efekti için gerekli kütüphane -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <!-- Proje Scriptleri (Sıralama Önemlidir: Önce Data sonra App) -->
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
