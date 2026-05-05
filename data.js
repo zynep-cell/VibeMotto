@@ -1,7 +1,6 @@
 const vibeData = {
     "Odak ve Süreklilik": [
         { en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür." },
-        { en: "Focus on what you can control right now.", tr: "Şu an kontrol edebileceğin şeye odaklan." },
         { en: "Consistency is stronger than intensity.", tr: "Süreklilik, yoğunluktan daha güçlüdür." }
     ],
     "Plan ve Eylem": [
