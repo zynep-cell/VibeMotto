@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    <!-- Odak Halkası (The Orb) -->
     <div id="focus-orb" class="focus-orb"></div>
 
     <div class="app-container">
@@ -18,23 +17,24 @@
                 <p id="motto-en" class="motto-en">"Select a category to begin your ritual."</p>
                 <p id="motto-tr" class="motto-tr"></p>
             </div>
-            <div id="ritual-box" class="ritual-text"></div>
+            <div id="ritual-box" class="ritual-text">HOŞ GELDİN</div>
         </header>
 
-        <nav class="category-nav" id="category-buttons"></nav>
+        <nav class="category-nav" id="category-buttons">
+            <!-- Butonlar buraya gelecek -->
+        </nav>
 
         <section class="interaction-area">
-            <!-- Günün Kanvası -->
             <div class="input-group">
                 <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak...">
             </div>
-            <!-- Ödül Alanı -->
             <div class="input-group">
                 <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?">
             </div>
         </section>
     </div>
 
+    <!-- Kütüphane ve JS dosyaları -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
