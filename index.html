@@ -47,8 +47,8 @@
         }
 
         .app-container {
-            width: 95%;
-            max-width: 600px;
+            width: 90%;
+            max-width: 500px;
             text-align: center;
             z-index: 10;
         }
@@ -74,8 +74,7 @@
             display: block;
             margin: 0 auto 15px;
             color: var(--accent);
-            opacity: 0;
-            transition: all 0.8s ease;
+            opacity: 0.6;
             height: 32px;
         }
 
@@ -97,10 +96,10 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
-        button {
+        button.cat-btn {
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(0,0,0,0.05);
             padding: 8px 18px;
@@ -109,35 +108,50 @@
             color: var(--soft);
             font-size: 0.75rem;
             transition: all 0.4s ease;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        button:hover { background: white; transform: translateY(-2px); }
-
-        /* YAN YANA GİRİŞ ALANLARI */
-        .interaction-area {
+        /* SMART INPUT DESIGN */
+        .smart-input-container {
             display: flex;
-            flex-direction: row; /* Yan yana */
+            align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: 100%;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        input {
+        .input-mode-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 5px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            opacity: 0.5;
+        }
+
+        .input-mode-btn.active {
+            opacity: 1;
+            transform: scale(1.2);
+            color: var(--text);
+        }
+
+        #master-input {
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-            padding: 10px 5px;
-            width: 140px; /* Biraz daha daraltıldı */
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 10px;
+            width: 200px;
             text-align: center;
             font-family: var(--serif);
             font-style: italic;
             outline: none;
-            transition: 0.4s;
-            font-size: 15px; 
+            transition: 0.5s;
+            font-size: 16px;
         }
 
-        input:focus { width: 160px; border-bottom-color: var(--accent); }
+        #master-input:focus { width: 260px; border-bottom-color: var(--accent); }
 
         .flying-word {
             position: fixed;
@@ -159,29 +173,34 @@
     <div class="focus-orb"></div>
 
     <div class="app-container">
-        <!-- SABİT MOTTO -->
         <div class="fixed-header">
             <p class="label">GÜNÜN SABİT MOTTOSU</p>
             <h2 id="fixed-en" class="fixed-en"></h2>
             <p id="fixed-tr" style="font-size: 0.8rem; color: var(--accent); margin-top: 5px;"></p>
         </div>
 
-        <!-- DİNAMİK ALAN -->
         <div class="dynamic-wrap">
             <p class="label">KATEGORİ REHBERİ</p>
             <div id="companion-doodle" class="doodle-icon"></div>
             <h1 id="dyn-en" class="dynamic-motto-en">Frekansını belirle...</h1>
-            <p id="dyn-tr" class="dynamic-motto-tr">Bir kategori seçerek ritüeli başlat.</p>
+            <p id="dyn-tr" class="dynamic-motto-tr">Ritüeli başlatmak için kategori seç.</p>
         </div>
 
         <div id="ritual-box" class="ritual-box">RİTÜELİNİ BAŞLAT</div>
 
         <nav class="category-nav" id="category-buttons"></nav>
 
-        <!-- YAN YANA GİRİŞ ALANLARI -->
-        <div class="interaction-area">
-            <input type="text" id="canvas-input" placeholder="Zihni boşalt..." autocomplete="off">
-            <input type="text" id="reward-input" placeholder="Ödülün ne?" autocomplete="off">
+        <!-- TEK BİR INPUT - ÇİFT FONKSİYON -->
+        <div class="smart-input-container">
+            <button class="input-mode-btn active" id="btn-canvas" title="Zihni Boşalt">
+                <i data-lucide="brain"></i>
+            </button>
+            
+            <input type="text" id="master-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
+            
+            <button class="input-mode-btn" id="btn-reward" title="Ödülünü Al">
+                <i data-lucide="gift"></i>
+            </button>
         </div>
     </div>
 
@@ -189,84 +208,89 @@
     <script>
         const vibeData = {
             "Odak ve Süreklilik": {
-                quotes: [
-                    {en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür."},
-                    {en: "Consistency is stronger than intensity.", tr: "Süreklilik, yoğunluktan daha güçlüdür."}
-                ],
+                quotes: [{en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür."}],
                 words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM", "NETLİK"],
                 colors: ["#fff5f6", "#fce4e6", "#fbc7d4"],
                 doodles: ["target", "compass", "anchor", "hourglass"]
             },
             "Plan ve Eylem": {
-                quotes: [
-                    {en: "Plans over moods, action over hesitation.", tr: "Duyguların önüne plan koy, tereddüt yerine harekete geç."},
-                    {en: "Prepare, act, adjust.", tr: "Hazırla, uygula, gerektiğinde ayarla."}
-                ],
+                quotes: [{en: "Plans over moods, action over hesitation.", tr: "Duyguların önüne plan koy, tereddüt yerine harekete geç."}],
                 words: ["HAREKET", "İCRAAT", "STRATEJİ", "CESARET", "SİSTEM", "GÜÇ"],
                 colors: ["#f0f7ff", "#e1f0ff", "#d1e9ff"],
                 doodles: ["check-circle", "send", "zap", "map"]
             },
             "Anı Yaşamak": {
-                quotes: [
-                    {en: "This moment is enough, focus on it.", tr: "Bu an yeterli, ona odaklan."},
-                    {en: "Be present, not perfect.", tr: "Mükemmel olmayı değil, şu anı yaşa."}
-                ],
+                quotes: [{en: "This moment is enough, focus on it.", tr: "Bu an yeterli, ona odaklan."}],
                 words: ["FARKINDALIK", "NEFES", "VARLIK", "AKKIŞ", "SÜKUNET", "GÖZLEM"],
                 colors: ["#fffdf0", "#fff9d4", "#f7d794"],
                 doodles: ["leaf", "eye", "sun", "flower"]
             },
             "Enerji ve Akış": {
-                quotes: [
-                    {en: "Energy first, then task.", tr: "Önce enerji, sonra görev."},
-                    {en: "Flow with energy, not with urgency.", tr: "Aceleyle değil, enerjiyle ak."}
-                ],
+                quotes: [{en: "Energy first, then task.", tr: "Önce enerji, sonra görev."}],
                 words: ["CANLILIK", "IŞILTI", "DENGE", "DÖNÜŞÜM", "YÜKSELİŞ", "TAZELEME"],
                 colors: ["#f2faf5", "#e6f5ec", "#d1ebd8"],
                 doodles: ["waves", "sparkles", "infinity", "droplet"]
             }
         };
 
-        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!", "Bunu hak ettin!"];
+        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!"];
+        let currentMode = "canvas"; // canvas veya reward
 
         window.onload = () => {
+            lucide.createIcons();
             const allCats = Object.keys(vibeData);
             const randomCat = allCats[Math.floor(Math.random() * allCats.length)];
-            const fixedQuote = vibeData[randomCat].quotes[Math.floor(Math.random() * vibeData[randomCat].quotes.length)];
+            const fixedQuote = vibeData[randomCat].quotes[0];
             document.getElementById('fixed-en').innerText = `"${fixedQuote.en}"`;
             document.getElementById('fixed-tr').innerText = fixedQuote.tr;
 
             const nav = document.getElementById('category-buttons');
             allCats.forEach(cat => {
                 const btn = document.createElement('button');
+                btn.className = "cat-btn";
                 btn.innerText = cat;
                 btn.onclick = () => updateTheme(cat);
                 nav.appendChild(btn);
             });
 
-            // GİRİŞ DİNLEYİCİLERİ
-            const canvasInput = document.getElementById('canvas-input');
-            const rewardInput = document.getElementById('reward-input');
+            setupSmartInput();
+        };
 
-            const handleEvent = (e, callback) => {
-                if (e.key === 'Enter' || e.keyCode === 13) {
-                    e.preventDefault();
-                    let val = e.target.value.trim();
-                    if (val !== "") {
-                        callback(val);
-                        e.target.value = "";
-                        e.target.blur();
-                    }
-                }
+        function setupSmartInput() {
+            const masterInput = document.getElementById('master-input');
+            const btnCanvas = document.getElementById('btn-canvas');
+            const btnReward = document.getElementById('btn-reward');
+
+            btnCanvas.onclick = () => {
+                currentMode = "canvas";
+                masterInput.placeholder = "Zihnini serbest bırak...";
+                btnCanvas.classList.add('active');
+                btnReward.classList.remove('active');
             };
 
-            canvasInput.addEventListener('keydown', (e) => handleEvent(e, createFloatingWord));
-            rewardInput.addEventListener('keydown', (e) => handleEvent(e, (val) => {
-                confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
-                const msg = rewards[Math.floor(Math.random() * rewards.length)];
-                rewardInput.value = `${msg} (${val})`;
-                setTimeout(() => { rewardInput.value = ""; }, 3000);
-            }));
-        };
+            btnReward.onclick = () => {
+                currentMode = "reward";
+                masterInput.placeholder = "Bugünkü ödülün ne?";
+                btnReward.classList.add('active');
+                btnCanvas.classList.remove('active');
+            };
+
+            masterInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                    let val = this.value.trim();
+                    if (val !== "") {
+                        if (currentMode === "canvas") {
+                            createFloatingWord(val);
+                        } else {
+                            triggerReward(val);
+                        }
+                        this.value = "";
+                        this.blur();
+                    }
+                }
+            });
+        }
 
         function createFloatingWord(val) {
             const el = document.createElement('div');
@@ -281,21 +305,27 @@
             }, 50);
         }
 
+        function triggerReward(val) {
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
+            const msg = rewards[Math.floor(Math.random() * rewards.length)];
+            const masterInput = document.getElementById('master-input');
+            masterInput.value = `${msg} (${val})`;
+            setTimeout(() => { masterInput.value = ""; }, 3000);
+        }
+
         function updateTheme(cat) {
             const data = vibeData[cat];
-            document.getElementById('dyn-en').innerText = `"${data.quotes[Math.floor(Math.random() * data.quotes.length)].en}"`;
+            document.getElementById('dyn-en').innerText = `"${data.quotes[0].en}"`;
             document.getElementById('dyn-tr').innerText = data.quotes[0].tr;
             document.getElementById('ritual-box').innerText = `ODAK: ${data.words[Math.floor(Math.random() * data.words.length)]}`;
             document.body.style.backgroundColor = data.colors[Math.floor(Math.random() * data.colors.length)];
 
             const companion = document.getElementById('companion-doodle');
             companion.style.opacity = "0";
-            companion.style.transform = "scale(0.8)";
             setTimeout(() => {
                 companion.innerHTML = `<i data-lucide="${data.doodles[Math.floor(Math.random() * data.doodles.length)]}"></i>`;
                 lucide.createIcons();
                 companion.style.opacity = "0.6";
-                companion.style.transform = "scale(1)";
             }, 400);
         }
     </script>
