@@ -1,62 +1,109 @@
 :root {
-    --bg-light: #fdfbf9;
-    --text-dark: #2c2c2c;
-    --text-soft: #555555; /* Daha koyu ve okunur yaptık */
-    --accent: #8a817c;
-    --serif: 'Lora', serif;
+    --bg: #fdfbf9;
+    --text: #2c2c2c;
+    --soft: #6e6e6e;
+    --accent: #dcd3c9;
 }
 
 body {
-    background-color: var(--bg-light);
-    transition: background 2s cubic-bezier(0.4, 0, 0.2, 1); /* Renk geçişi burada başlar */
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background 1.5s ease;
     overflow: hidden;
 }
 
-/* Günün Mottosu Sabit Alanı */
-.daily-motto-header {
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+.app-container {
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    z-index: 10;
 }
 
-.motto-label {
-    font-size: 0.65rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
+h1 {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    font-weight: 400;
     margin-bottom: 10px;
-    font-weight: 600;
 }
 
-/* Kategori İçeriği (Değişen Kısım) */
-.category-content {
-    min-height: 150px;
-    transition: all 0.8s ease;
+p {
+    color: var(--soft);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
 }
 
-/* Geliştirilmiş Odak Halkası */
+.ritual-box {
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 40px;
+    height: 20px;
+}
+
+.category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 50px;
+}
+
+button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--soft);
+    font-family: inherit;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--accent);
+    color: white;
+}
+
+input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--accent);
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    font-family: 'Lora', serif;
+    outline: none;
+    margin: 10px;
+    transition: 0.4s;
+}
+
+input:focus { width: 280px; }
+
 .focus-orb {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     width: 400px;
     height: 400px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 50%;
-    z-index: -1; /* En arkaya al */
-    box-shadow: 0 0 100px rgba(255, 255, 255, 0.8), inset 0 0 40px rgba(0,0,0,0.02);
-    animation: pulse 8s infinite ease-in-out;
+    background: radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%);
+    z-index: -1;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-@keyframes pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
-}
-
-.ritual-text {
-    font-size: 1rem;
-    color: #4a4a4a; /* Daha belirgin siyah-gri */
-    font-weight: 500;
-    letter-spacing: 2px;
+.flying-word {
+    position: fixed;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Lora', serif;
+    font-style: italic;
+    transition: 3s ease-out;
+    pointer-events: none;
 }
