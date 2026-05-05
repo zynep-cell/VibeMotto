@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeMotto | Digital Sanctuary</title>
+    <title>VibeMotto | Zaze Style</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #fdfbf9;
             --text: #2c2c2c;
             --soft: #555555;
             --accent: #8a817c;
@@ -15,7 +14,7 @@
         }
 
         body {
-            background-color: var(--bg);
+            background: linear-gradient(135deg, #fdfbf9 0%, #f4f1ea 100%);
             color: var(--text);
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -23,104 +22,92 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            transition: background 1.5s ease-in-out;
+            transition: all 2s ease; /* Renk geçişi yumuşaklığı */
             overflow: hidden;
         }
 
-        /* Arka Plandaki Yumuşak Halka */
         .focus-orb {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px; height: 500px;
-            border: 1px solid rgba(0,0,0,0.05);
+            width: 550px; height: 550px;
+            border: 1px solid rgba(0,0,0,0.03);
             border-radius: 50%;
             z-index: -1;
-            box-shadow: inset 0 0 100px rgba(255,255,255,0.8);
             pointer-events: none;
+            animation: pulse 10s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
         }
 
         .app-container {
             width: 90%;
-            max-width: 600px;
+            max-width: 650px;
             text-align: center;
             z-index: 10;
         }
 
-        /* Üst Motto Alanı */
-        .motto-label {
-            font-size: 0.7rem;
-            letter-spacing: 4px;
+        /* Sabit Günün Mottosu */
+        .fixed-motto-section {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .label {
+            font-size: 0.65rem;
+            letter-spacing: 5px;
             color: var(--accent);
-            margin-bottom: 20px;
             text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
-        .motto-en {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 1.8rem;
-            margin: 0 0 10px 0;
-            line-height: 1.3;
-        }
+        /* Dinamik Alan */
+        .dynamic-section { min-height: 140px; margin-bottom: 30px; }
 
-        .motto-tr {
-            font-size: 1rem;
-            color: var(--soft);
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
+        .motto-en { font-family: var(--serif); font-style: italic; font-size: 1.6rem; margin: 0 0 8px 0; }
+        .motto-tr { font-size: 0.95rem; color: var(--soft); font-weight: 300; }
 
-        /* Odak Kelimesi */
         .ritual-box {
             font-size: 0.9rem;
             letter-spacing: 3px;
-            color: #4a4a4a;
+            color: #2c2c2c;
             font-weight: 500;
             margin-bottom: 40px;
-            height: 25px;
             text-transform: uppercase;
         }
 
-        /* Kategoriler */
         .category-nav {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 60px;
+            gap: 10px;
+            margin-bottom: 50px;
         }
 
         button {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid #e0e0e0;
-            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 8px 18px;
             border-radius: 30px;
             cursor: pointer;
             color: var(--soft);
-            font-family: inherit;
+            font-size: 0.8rem;
             transition: 0.4s;
         }
 
-        button:hover {
-            border-color: var(--accent);
-            color: var(--text);
-            background: white;
-        }
+        button:hover { background: white; border-color: var(--accent); color: var(--text); }
 
-        /* Inputlar */
-        .interaction-area {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
+        .input-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
 
         input {
             background: transparent;
             border: none;
-            border-bottom: 1px solid #ddd;
-            padding: 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 10px;
             width: 220px;
             text-align: center;
             font-family: var(--serif);
@@ -131,15 +118,15 @@
 
         input:focus { width: 300px; border-bottom-color: var(--accent); }
 
-        /* Efektler */
         .flying-word {
             position: fixed;
             bottom: 20%;
             font-family: var(--serif);
             font-style: italic;
             color: var(--soft);
-            transition: 3s ease-out;
+            transition: 4s ease-out;
             pointer-events: none;
+            z-index: 100;
         }
     </style>
 </head>
@@ -148,17 +135,25 @@
     <div class="focus-orb"></div>
 
     <div class="app-container">
-        <p class="motto-label">Günün Mottosu</p>
-        <div class="motto-area">
-            <h1 id="motto-en" class="motto-en">"Consistency is key."</h1>
-            <p id="motto-tr" class="motto-tr">Süreklilik anahtardır.</p>
+        <!-- SABİT MOTTO (Günün Çapası) -->
+        <div class="fixed-motto-section">
+            <p class="label">GÜNÜN SABİT MOTTOSU</p>
+            <h2 id="fixed-en" style="font-family: var(--serif); font-size: 1.3rem; opacity: 0.8;"></h2>
+            <p id="fixed-tr" style="font-size: 0.9rem; color: var(--accent);"></p>
         </div>
 
-        <div id="ritual-box" class="ritual-box">ODAK: SÜKUNET</div>
+        <!-- DİNAMİK MOTTO (Kategoriye Özel) -->
+        <div class="dynamic-section">
+            <p class="label">KATEGORİ REHBERİ</p>
+            <h1 id="dyn-en" class="motto-en">Kategori seçerek başla...</h1>
+            <p id="dyn-tr" class="motto-tr"></p>
+        </div>
+
+        <div id="ritual-box" class="ritual-box">ODAK SEÇİLMEDİ</div>
 
         <nav class="category-nav" id="category-buttons"></nav>
 
-        <div class="interaction-area">
+        <div class="input-group">
             <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
             <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?" autocomplete="off">
         </div>
@@ -167,77 +162,103 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         const vibeData = {
-            "Odak ve Süreklilik": { 
-                quotes: [{en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür."}],
-                words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM"],
-                color: "#f4f1ea"
+            "Odak ve Süreklilik": {
+                quotes: [
+                    {en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür."},
+                    {en: "Consistency is stronger than intensity.", tr: "Süreklilik, yoğunluktan daha güçlüdür."}
+                ],
+                words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM", "AKKIŞ", "NETLİK"],
+                colors: ["#f4f1ea", "#e8e2d9", "#dcd3c9"]
             },
-            "Plan ve Eylem": { 
-                quotes: [{en: "Plans over moods, action over hesitation.", tr: "Duyguların önüne plan koy, tereddüt yerine harekete geç."}],
-                words: ["HAREKET", "İCRAAT", "NETLİK", "SİSTEM", "CESARET"],
-                color: "#edf2f4"
+            "Plan ve Eylem": {
+                quotes: [
+                    {en: "Plans over moods, action over hesitation.", tr: "Duyguların önüne plan koy, tereddüt yerine harekete geç."},
+                    {en: "A plan in action beats a perfect plan waiting.", tr: "Bekleyen mükemmel bir plan, uygulamadaki bir plandan daha az etkilidir."}
+                ],
+                words: ["HAREKET", "İCRAAT", "STRATEJİ", "CESARET", "ZAMAN", "SİSTEM", "GÜÇ"],
+                colors: ["#edf2f4", "#dae1e7", "#c9d6df"]
             },
-            "Anı Yaşamak": { 
-                quotes: [{en: "This moment is enough, focus on it.", tr: "Bu an yeterli, ona odaklan."}],
-                words: ["FARKINDALIK", "NEFES", "AKKIŞ", "VARLIK", "SÜKUNET"],
-                color: "#f1f4f1"
+            "Anı Yaşamak": {
+                quotes: [
+                    {en: "This moment is enough, focus on it.", tr: "Bu an yeterli, ona odaklan."},
+                    {en: "Be present, not perfect.", tr: "Mükemmel olmayı değil, şu anı yaşa."}
+                ],
+                words: ["FARKINDALIK", "NEFES", "VARLIK", "AKKIŞ", "SÜKUNET", "GÖZLEM", "DURGUNLUK"],
+                colors: ["#f1f4f1", "#e2e8e2", "#d4dbd4"]
             },
-            "Stres Yönetimi": { 
-                quotes: [{en: "Feel it, don’t fight it.", tr: "Hisset, savaşma."}],
-                words: ["HUZUR", "DENGE", "GÜVEN", "ŞEFKAT", "YAVAŞLIK"],
-                color: "#fdf4f5"
+            "Stres Yönetimi": {
+                quotes: [
+                    {en: "Feel it, don’t fight it.", tr: "Hisset, savaşma."},
+                    {en: "Worry less, act more.", tr: "Daha az kaygılan, daha çok harekete geç."}
+                ],
+                words: ["HUZUR", "DENGE", "GÜVEN", "ŞEFKAT", "YAVAŞLIK", "TAHLİYE", "SABIR"],
+                colors: ["#fdf4f5", "#f9e7e9", "#f4dadd"]
             }
         };
 
+        const rewards = ["Harikasın!", "Süper!", "Wow!", "Mükemmel!", "Bunu hak ettin!", "Işılda! ✨", "Gurur duy!"];
+
         window.onload = () => {
+            // 1. Sabit Mottoyu Belirle (Sayfa açıldığında değişmez)
+            const allCats = Object.keys(vibeData);
+            const randomCat = allCats[Math.floor(Math.random() * allCats.length)];
+            const fixedQuote = vibeData[randomCat].quotes[Math.floor(Math.random() * vibeData[randomCat].quotes.length)];
+            document.getElementById('fixed-en').innerText = `"${fixedQuote.en}"`;
+            document.getElementById('fixed-tr').innerText = fixedQuote.tr;
+
+            // 2. Butonları Oluştur
             const nav = document.getElementById('category-buttons');
-            Object.keys(vibeData).forEach(cat => {
+            allCats.forEach(cat => {
                 const btn = document.createElement('button');
                 btn.innerText = cat;
                 btn.onclick = () => updateTheme(cat);
                 nav.appendChild(btn);
             });
-            
-            // İlk açılış
-            updateTheme("Odak ve Süreklilik");
 
-            // Kanvas Uçurma
+            // 3. Kanvas Uçurma
             document.getElementById('canvas-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && this.value) {
                     const el = document.createElement('div');
                     el.className = 'flying-word';
                     el.innerText = this.value;
-                    el.style.left = "50%";
-                    el.style.transform = "translateX(-50%)";
+                    el.style.left = Math.random() * 60 + 20 + "%";
                     document.body.appendChild(el);
                     setTimeout(() => {
-                        el.style.transform = "translate(-50%, -300px)";
+                        el.style.transform = `translateY(-350px) rotate(${Math.random() * 20 - 10}deg)`;
                         el.style.opacity = "0";
-                        setTimeout(() => el.remove(), 3000);
+                        setTimeout(() => el.remove(), 4000);
                     }, 100);
                     this.value = "";
                 }
             });
 
-            // Ödül Patlatma
+            // 4. Ödül Kutlaması
             document.getElementById('reward-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && this.value) {
-                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#dcd3c9', '#8a817c'] });
-                    this.value = "Harikasın! ✨";
-                    setTimeout(() => this.value = "", 2000);
+                    confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 }, colors: ['#8a817c', '#dcd3c9', '#fdfbf9'] });
+                    const randomMsg = rewards[Math.floor(Math.random() * rewards.length)];
+                    let savedVal = this.value;
+                    this.value = `${randomMsg} (${savedVal})`;
+                    setTimeout(() => this.value = "", 3000);
                 }
             });
         };
 
         function updateTheme(cat) {
             const data = vibeData[cat];
+            
+            // Dinamik Motto Değişimi
             const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
-            const randomWord = data.words[Math.floor(Math.random() * data.words.length)];
+            document.getElementById('dyn-en').innerText = `"${randomQuote.en}"`;
+            document.getElementById('dyn-tr').innerText = randomQuote.tr;
 
-            document.getElementById('motto-en').innerText = `"${randomQuote.en}"`;
-            document.getElementById('motto-tr').innerText = randomQuote.tr;
+            // Odak Kelimesi Değişimi
+            const randomWord = data.words[Math.floor(Math.random() * data.words.length)];
             document.getElementById('ritual-box').innerText = `ODAK: ${randomWord}`;
-            document.body.style.backgroundColor = data.color;
+
+            // Renk Geçişi (3 soft renkten rastgele seçer)
+            const randomColor = data.colors[Math.floor(Math.random() * data.colors.length)];
+            document.body.style.background = `radial-gradient(circle at center, white 0%, ${randomColor} 100%)`;
         }
     </script>
 </body>
