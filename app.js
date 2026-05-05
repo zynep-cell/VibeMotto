@@ -1,59 +1,78 @@
+const categoryStyles = {
+    "Odak ve Süreklilik": { color: "#f4f1ea", word: "DİSİPLİN" },
+    "Plan ve Eylem": { color: "#edf2f4", word: "HAREKET" },
+    "Anı Yaşamak": { color: "#f1f4f1", word: "FARKINDALIK" },
+    "Stres Yönetimi": { color: "#fdf4f5", word: "HUZUR" }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    setupCategories();
-    setupCanvas();
-    setDailyRitual();
+    renderButtons();
+    initInputs();
 });
 
-function setupCategories() {
+function renderButtons() {
     const nav = document.getElementById('category-buttons');
     Object.keys(vibeData).forEach(cat => {
         const btn = document.createElement('button');
         btn.innerText = cat;
-        btn.onclick = () => showMotto(cat);
+        btn.onclick = () => updateTheme(cat);
         nav.appendChild(btn);
     });
 }
 
-function showMotto(category) {
-    const quotes = vibeData[category];
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    const card = document.getElementById('content-card');
+function updateTheme(cat) {
+    // Sözleri Güncelle
+    const quotes = vibeData[cat];
+    const random = quotes[Math.floor(Math.random() * quotes.length)];
     
-    card.classList.add('hidden');
-    setTimeout(() => {
-        document.getElementById('motto-en').innerText = `“${randomQuote.en}”`;
-        document.getElementById('motto-tr').innerText = randomQuote.tr;
-        card.classList.remove('hidden');
-        card.classList.add('fade-in');
-    }, 300);
+    document.getElementById('motto-en').innerText = `"${random.en}"`;
+    document.getElementById('motto-tr').innerText = random.tr;
+
+    // Arkaplan ve Halka Güncelle
+    document.body.style.backgroundColor = categoryStyles[cat].color;
+    const orb = document.getElementById('focus-orb');
+    orb.style.borderColor = "rgba(0,0,0,0.05)";
+    orb.style.width = "400px";
+    orb.style.height = "400px";
+    
+    // Odak Kelimesini Ritüel Alanına Yaz
+    document.getElementById('ritual-box').innerText = `ODAK: ${categoryStyles[cat].word}`;
 }
 
-function setupCanvas() {
-    const input = document.getElementById('canvas-input');
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && input.value.trim() !== "") {
-            releaseWord(input.value);
-            input.value = "";
+function initInputs() {
+    // Kanvas Uçurma
+    document.getElementById('canvas-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && this.value) {
+            createFloatingWord(this.value);
+            this.value = "";
+        }
+    });
+
+    // Ödül Kutlaması
+    document.getElementById('reward-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && this.value) {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#dcd3c9', '#b5a492', '#fdfbf9']
+            });
+            this.value = `Keyfini çıkar: ${this.value}!`;
+            setTimeout(() => { this.value = ""; }, 3000);
         }
     });
 }
 
-function releaseWord(word) {
-    const orb = document.createElement('div');
-    orb.className = 'floating-orb';
-    orb.innerText = word;
-    document.body.appendChild(orb);
+function createFloatingWord(val) {
+    const el = document.createElement('div');
+    el.className = 'floating-word';
+    el.innerText = val;
+    el.style.left = "50%";
+    document.body.appendChild(el);
 
     setTimeout(() => {
-        orb.style.opacity = "0";
-        orb.style.bottom = "80%";
-        orb.style.transform = "translateX(-50%) scale(2)";
-        setTimeout(() => orb.remove(), 2500);
+        el.style.transform = "translate(-50%, -200px)";
+        el.style.opacity = "0";
+        setTimeout(() => el.remove(), 3000);
     }, 100);
-}
-
-function setDailyRitual() {
-    const ritualText = document.getElementById('ritual-text');
-    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-    ritualText.innerText = `Ritüel: ${rituals[dayOfYear % rituals.length]}`;
 }
