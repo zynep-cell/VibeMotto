@@ -1,28 +1,52 @@
-window.addEventListener('load', function() {
+let dailyMotto = "";
+
+window.onload = function() {
+    setDailyMotto(); // Günün mottosunu en üstte sabitle
     renderButtons();
     initInputs();
-    
-    // SAYFA AÇILDIĞINDA RASTGELE BİR MOTTO İLE BAŞLAT
-    const categories = Object.keys(vibeData);
-    const randomCat = categories[Math.floor(Math.random() * categories.length)];
-    updateTheme(randomCat); 
-});
+};
 
-// updateTheme fonksiyonunun içindeki orb kısmını şu şekilde güncelle:
-function updateTheme(cat) {
-    const quotes = vibeData[cat];
-    const random = quotes[Math.floor(Math.random() * quotes.length)];
+function setDailyMotto() {
+    // Tüm kategorilerden rastgele bir tane seç ve sabitle
+    const allCats = Object.keys(vibeData);
+    const randomCat = allCats[Math.floor(Math.random() * allCats.length)];
+    const quotes = vibeData[randomCat];
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
     
-    document.getElementById('motto-en').innerText = `"${random.en}"`;
-    document.getElementById('motto-tr').innerText = random.tr;
+    document.getElementById('motto-en').innerText = `"${quote.en}"`;
+    document.getElementById('motto-tr').innerText = quote.tr;
+}
 
+function renderButtons() {
+    const nav = document.getElementById('category-buttons');
+    Object.keys(vibeData).forEach(cat => {
+        const btn = document.createElement('button');
+        btn.innerText = cat;
+        btn.onclick = () => updateCategoryContent(cat);
+        nav.appendChild(btn);
+    });
+}
+
+function updateCategoryContent(cat) {
+    // Arkaplan Rengi Geçişi
     document.body.style.backgroundColor = categoryStyles[cat].color;
-    document.getElementById('ritual-box').innerText = `ODAK: ${categoryStyles[cat].word}`;
+
+    // Kategorinin Odak Kelimelerinden Rastgele Birini Seç
+    const words = categoryStyles[cat].words;
+    const randomWord = words[Math.floor(Math.random() * words.length)];
     
-    const orb = document.getElementById('focus-orb');
-    // Halkayı her tıklamada biraz daha canlı yapalım
-    orb.style.width = "480px";
-    orb.style.height = "480px";
-    orb.style.borderColor = "rgba(0, 0, 0, 0.1)"; // Daha belirgin gri
-    orb.style.boxShadow = "0 0 80px rgba(255, 255, 255, 0.8)";
+    const ritualBox = document.getElementById('ritual-box');
+    ritualBox.style.opacity = "0";
+    
+    setTimeout(() => {
+        ritualBox.innerText = `ODAK: ${randomWord}`;
+        ritualBox.style.opacity = "1";
+    }, 400);
+
+    // Kategoriye özel içeriği alt kısımda göster (isteğe bağlı yeni sözler için)
+    const categoryQuotes = vibeData[cat];
+    const newQuote = categoryQuotes[Math.floor(Math.random() * categoryQuotes.length)];
+    
+    // Alt kısımda yeni bir motto alanı istersen buraya ekleme yapabilirsin
+    // Şu an için sadece odak kelimesi ve renk değişiyor
 }
