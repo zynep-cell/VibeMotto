@@ -51,7 +51,6 @@
             max-width: 600px;
             text-align: center;
             z-index: 10;
-            padding: 20px 0;
         }
 
         .fixed-header {
@@ -128,7 +127,7 @@
             font-style: italic;
             outline: none;
             transition: 0.5s;
-            font-size: 16px; /* Mobil tarayıcılarda zoom yapmaması için minimum 16px */
+            font-size: 16px; 
         }
 
         input:focus { width: 260px; border-bottom-color: var(--accent); }
@@ -153,14 +152,12 @@
     <div class="focus-orb"></div>
 
     <div class="app-container">
-        <!-- SABİT MOTTO -->
         <div class="fixed-header">
             <p class="label">GÜNÜN SABİT MOTTOSU</p>
             <h2 id="fixed-en" class="fixed-en"></h2>
             <p id="fixed-tr" style="font-size: 0.8rem; color: var(--accent); margin-top: 5px;"></p>
         </div>
 
-        <!-- DİNAMİK ALAN -->
         <div class="dynamic-wrap">
             <p class="label">KATEGORİ REHBERİ</p>
             <div id="companion-doodle" class="doodle-icon"></div>
@@ -219,7 +216,7 @@
             }
         };
 
-        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!"];
+        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!", "Bunu hak ettin!", "Harika gidiyorsun!"];
 
         window.onload = () => {
             const allCats = Object.keys(vibeData);
@@ -236,28 +233,46 @@
                 nav.appendChild(btn);
             });
 
-            // Mobil Uyumlu Giriş Fonksiyonları
-            setupInputEffects();
-        };
-
-        function setupInputEffects() {
+            // Geliştirilmiş Giriş Dinleyicileri
             const canvasInput = document.getElementById('canvas-input');
             const rewardInput = document.getElementById('reward-input');
 
-            const handleInput = (e, callback) => {
+            canvasInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.keyCode === 13) {
                     e.preventDefault();
-                    if (e.target.value.trim() !== "") {
-                        callback(e.target.value);
-                        e.target.value = "";
-                        e.target.blur(); // Klavyeyi kapat (Mobilde uçuşu görmek için)
+                    let val = this.value.trim();
+                    if (val !== "") {
+                        createFloatingWord(val);
+                        this.value = "";
+                        this.blur();
                     }
                 }
-            };
+            });
 
-            canvasInput.addEventListener('keydown', (e) => handleInput(e, createFloatingWord));
-            rewardInput.addEventListener('keydown', (e) => handleInput(e, triggerConfetti));
-        }
+            rewardInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                    let val = this.value.trim();
+                    if (val !== "") {
+                        // Konfeti
+                        confetti({ 
+                            particleCount: 150, 
+                            spread: 80, 
+                            origin: { y: 0.75 }, 
+                            colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] 
+                        });
+                        
+                        // Rastgele Tebrik Mesajı
+                        const msg = rewards[Math.floor(Math.random() * rewards.length)];
+                        this.value = `${msg} (${val})`;
+                        
+                        // Ekranı temizle ve klavyeyi kapat
+                        setTimeout(() => { this.value = ""; }, 3000);
+                        this.blur();
+                    }
+                }
+            });
+        };
 
         function createFloatingWord(val) {
             const el = document.createElement('div');
@@ -266,20 +281,11 @@
             el.style.left = Math.random() * 60 + 20 + "%";
             document.body.appendChild(el);
             
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    el.style.transform = `translate(-50%, -450px) rotate(${Math.random() * 20 - 10}deg)`;
-                    el.style.opacity = "0";
-                    setTimeout(() => el.remove(), 4000);
-                }, 50);
-            });
-        }
-
-        function triggerConfetti(val) {
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
-            const msg = rewards[Math.floor(Math.random() * rewards.length)];
-            document.getElementById('reward-input').value = `${msg} (${val})`;
-            setTimeout(() => { document.getElementById('reward-input').value = ""; }, 3000);
+            setTimeout(() => {
+                el.style.transform = `translate(-50%, -450px) rotate(${Math.random() * 20 - 10}deg)`;
+                el.style.opacity = "0";
+                setTimeout(() => el.remove(), 4000);
+            }, 50);
         }
 
         function updateTheme(cat) {
