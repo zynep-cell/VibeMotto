@@ -114,7 +114,8 @@
 
         button:hover { background: white; transform: translateY(-2px); }
 
-        .input-group { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        /* Her inputu kendi bağımsız kutusuna aldık */
+        .interaction-wrapper { margin-bottom: 15px; }
 
         input {
             background: transparent;
@@ -152,12 +153,14 @@
     <div class="focus-orb"></div>
 
     <div class="app-container">
+        <!-- SABİT MOTTO -->
         <div class="fixed-header">
             <p class="label">GÜNÜN SABİT MOTTOSU</p>
             <h2 id="fixed-en" class="fixed-en"></h2>
             <p id="fixed-tr" style="font-size: 0.8rem; color: var(--accent); margin-top: 5px;"></p>
         </div>
 
+        <!-- DİNAMİK ALAN -->
         <div class="dynamic-wrap">
             <p class="label">KATEGORİ REHBERİ</p>
             <div id="companion-doodle" class="doodle-icon"></div>
@@ -169,9 +172,14 @@
 
         <nav class="category-nav" id="category-buttons"></nav>
 
-        <div class="input-group">
-            <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
-            <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?" autocomplete="off">
+        <!-- INPUTLAR ARTIK AYRI WRAPPERLAR İÇİNDE (KLAVYE ÇÖZÜMÜ) -->
+        <div class="interaction-area">
+            <div class="interaction-wrapper">
+                <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
+            </div>
+            <div class="interaction-wrapper">
+                <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?" autocomplete="off">
+            </div>
         </div>
     </div>
 
@@ -233,10 +241,10 @@
                 nav.appendChild(btn);
             });
 
-            // Geliştirilmiş Giriş Dinleyicileri
             const canvasInput = document.getElementById('canvas-input');
             const rewardInput = document.getElementById('reward-input');
 
+            // MOBİL KLAVYE TAM UYUMLULUK
             canvasInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.keyCode === 13) {
                     e.preventDefault();
@@ -244,7 +252,7 @@
                     if (val !== "") {
                         createFloatingWord(val);
                         this.value = "";
-                        this.blur();
+                        this.blur(); // Odaktan çık ki klavye kapansın/güncellensin
                     }
                 }
             });
@@ -254,19 +262,14 @@
                     e.preventDefault();
                     let val = this.value.trim();
                     if (val !== "") {
-                        // Konfeti
                         confetti({ 
                             particleCount: 150, 
                             spread: 80, 
                             origin: { y: 0.75 }, 
                             colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] 
                         });
-                        
-                        // Rastgele Tebrik Mesajı
                         const msg = rewards[Math.floor(Math.random() * rewards.length)];
                         this.value = `${msg} (${val})`;
-                        
-                        // Ekranı temizle ve klavyeyi kapat
                         setTimeout(() => { this.value = ""; }, 3000);
                         this.blur();
                     }
