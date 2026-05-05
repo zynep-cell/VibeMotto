@@ -23,7 +23,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            min-height: -webkit-fill-available;
             transition: background 2.5s ease-in-out;
             overflow: hidden;
             touch-action: manipulation;
@@ -110,7 +109,6 @@
             transition: all 0.4s ease;
         }
 
-        /* SMART INPUT DESIGN */
         .smart-input-container {
             display: flex;
             align-items: center;
@@ -128,7 +126,7 @@
             transition: 0.3s;
             display: flex;
             align-items: center;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         .input-mode-btn.active {
@@ -190,7 +188,6 @@
 
         <nav class="category-nav" id="category-buttons"></nav>
 
-        <!-- TEK BİR INPUT - ÇİFT FONKSİYON -->
         <div class="smart-input-container">
             <button class="input-mode-btn active" id="btn-canvas" title="Zihni Boşalt">
                 <i data-lucide="brain"></i>
@@ -233,8 +230,8 @@
             }
         };
 
-        const rewards = ["Harikasın!", "Süper!", "Wow!", "Işılda! ✨", "Gurur duy!", "Mükemmel!"];
-        let currentMode = "canvas"; // canvas veya reward
+        const rewardsList = ["Harikasın!", "Süper!", "Wow!", "Mükemmel!", "Bunu hak ettin!", "Işılda! ✨", "Gurur duy!", "Harika gidiyorsun!"];
+        let currentMode = "canvas";
 
         window.onload = () => {
             lucide.createIcons();
@@ -282,11 +279,16 @@
                     if (val !== "") {
                         if (currentMode === "canvas") {
                             createFloatingWord(val);
+                            this.value = "";
+                            this.blur();
                         } else {
-                            triggerReward(val);
+                            // ÖDÜL MODU ÇALIŞIYOR
+                            confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
+                            const randomMsg = rewardsList[Math.floor(Math.random() * rewardsList.length)];
+                            this.value = `${randomMsg} (${val})`;
+                            setTimeout(() => { this.value = ""; }, 3500);
+                            this.blur();
                         }
-                        this.value = "";
-                        this.blur();
                     }
                 }
             });
@@ -303,14 +305,6 @@
                 el.style.opacity = "0";
                 setTimeout(() => el.remove(), 4000);
             }, 50);
-        }
-
-        function triggerReward(val) {
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.75 }, colors: ['#fbc7d4', '#d1e9ff', '#f7d794', '#d1ebd8'] });
-            const msg = rewards[Math.floor(Math.random() * rewards.length)];
-            const masterInput = document.getElementById('master-input');
-            masterInput.value = `${msg} (${val})`;
-            setTimeout(() => { masterInput.value = ""; }, 3000);
         }
 
         function updateTheme(cat) {
