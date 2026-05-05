@@ -3,35 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeMotto</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <title>VibeMotto | Digital Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfbf9;
+            --text: #2c2c2c;
+            --soft: #555555;
+            --accent: #8a817c;
+            --serif: 'Lora', serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background 1.5s ease-in-out;
+            overflow: hidden;
+        }
+
+        /* Arka Plandaki Yumuşak Halka */
+        .focus-orb {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 500px;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 50%;
+            z-index: -1;
+            box-shadow: inset 0 0 100px rgba(255,255,255,0.8);
+            pointer-events: none;
+        }
+
+        .app-container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Üst Motto Alanı */
+        .motto-label {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .motto-en {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+        }
+
+        .motto-tr {
+            font-size: 1rem;
+            color: var(--soft);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* Odak Kelimesi */
+        .ritual-box {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: #4a4a4a;
+            font-weight: 500;
+            margin-bottom: 40px;
+            height: 25px;
+            text-transform: uppercase;
+        }
+
+        /* Kategoriler */
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 60px;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid #e0e0e0;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            color: var(--soft);
+            font-family: inherit;
+            transition: 0.4s;
+        }
+
+        button:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            background: white;
+        }
+
+        /* Inputlar */
+        .interaction-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            width: 220px;
+            text-align: center;
+            font-family: var(--serif);
+            font-style: italic;
+            outline: none;
+            transition: 0.5s;
+        }
+
+        input:focus { width: 300px; border-bottom-color: var(--accent); }
+
+        /* Efektler */
+        .flying-word {
+            position: fixed;
+            bottom: 20%;
+            font-family: var(--serif);
+            font-style: italic;
+            color: var(--soft);
+            transition: 3s ease-out;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-    <div id="focus-orb" class="focus-orb"></div>
+
+    <div class="focus-orb"></div>
 
     <div class="app-container">
-        <!-- Motto Alanı -->
-        <div id="motto-wrap" class="motto-wrap">
-            <h1 id="motto-en"></h1>
-            <p id="motto-tr"></p>
+        <p class="motto-label">Günün Mottosu</p>
+        <div class="motto-area">
+            <h1 id="motto-en" class="motto-en">"Consistency is key."</h1>
+            <p id="motto-tr" class="motto-tr">Süreklilik anahtardır.</p>
         </div>
 
-        <!-- Odak Kelimesi -->
-        <div id="ritual-box" class="ritual-box"></div>
+        <div id="ritual-box" class="ritual-box">ODAK: SÜKUNET</div>
 
-        <!-- Kategoriler -->
         <nav class="category-nav" id="category-buttons"></nav>
 
-        <!-- Etkileşim -->
-        <div class="interaction-group">
+        <div class="interaction-area">
             <input type="text" id="canvas-input" placeholder="Zihnini serbest bırak..." autocomplete="off">
             <input type="text" id="reward-input" placeholder="Bugünkü ödülün ne?" autocomplete="off">
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="data.js"></script>
-    <script src="app.js"></script>
+    <script>
+        const vibeData = {
+            "Odak ve Süreklilik": { 
+                quotes: [{en: "Small consistent steps beat big occasional efforts.", tr: "Küçük ama tutarlı adımlar, büyük ama aralıklı çabalardan üstündür."}],
+                words: ["DİSİPLİN", "SABIR", "RİTİM", "İSTİKRAR", "ADIM"],
+                color: "#f4f1ea"
+            },
+            "Plan ve Eylem": { 
+                quotes: [{en: "Plans over moods, action over hesitation.", tr: "Duyguların önüne plan koy, tereddüt yerine harekete geç."}],
+                words: ["HAREKET", "İCRAAT", "NETLİK", "SİSTEM", "CESARET"],
+                color: "#edf2f4"
+            },
+            "Anı Yaşamak": { 
+                quotes: [{en: "This moment is enough, focus on it.", tr: "Bu an yeterli, ona odaklan."}],
+                words: ["FARKINDALIK", "NEFES", "AKKIŞ", "VARLIK", "SÜKUNET"],
+                color: "#f1f4f1"
+            },
+            "Stres Yönetimi": { 
+                quotes: [{en: "Feel it, don’t fight it.", tr: "Hisset, savaşma."}],
+                words: ["HUZUR", "DENGE", "GÜVEN", "ŞEFKAT", "YAVAŞLIK"],
+                color: "#fdf4f5"
+            }
+        };
+
+        window.onload = () => {
+            const nav = document.getElementById('category-buttons');
+            Object.keys(vibeData).forEach(cat => {
+                const btn = document.createElement('button');
+                btn.innerText = cat;
+                btn.onclick = () => updateTheme(cat);
+                nav.appendChild(btn);
+            });
+            
+            // İlk açılış
+            updateTheme("Odak ve Süreklilik");
+
+            // Kanvas Uçurma
+            document.getElementById('canvas-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value) {
+                    const el = document.createElement('div');
+                    el.className = 'flying-word';
+                    el.innerText = this.value;
+                    el.style.left = "50%";
+                    el.style.transform = "translateX(-50%)";
+                    document.body.appendChild(el);
+                    setTimeout(() => {
+                        el.style.transform = "translate(-50%, -300px)";
+                        el.style.opacity = "0";
+                        setTimeout(() => el.remove(), 3000);
+                    }, 100);
+                    this.value = "";
+                }
+            });
+
+            // Ödül Patlatma
+            document.getElementById('reward-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value) {
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#dcd3c9', '#8a817c'] });
+                    this.value = "Harikasın! ✨";
+                    setTimeout(() => this.value = "", 2000);
+                }
+            });
+        };
+
+        function updateTheme(cat) {
+            const data = vibeData[cat];
+            const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
+            const randomWord = data.words[Math.floor(Math.random() * data.words.length)];
+
+            document.getElementById('motto-en').innerText = `"${randomQuote.en}"`;
+            document.getElementById('motto-tr').innerText = randomQuote.tr;
+            document.getElementById('ritual-box').innerText = `ODAK: ${randomWord}`;
+            document.body.style.backgroundColor = data.color;
+        }
+    </script>
 </body>
 </html>
